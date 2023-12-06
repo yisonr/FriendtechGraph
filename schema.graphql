@@ -1,23 +1,46 @@
 type OwnershipTransferred @entity(immutable: true) {
-  id: Bytes!
-  previousOwner: Bytes! # address
-  newOwner: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+	id: ID!
+	previousOwner: Bytes! # address
+	newOwner: Bytes! # address
+	blockNumber: BigInt!
+	blockTimestamp: BigInt!
+	transactionHash: Bytes!
+}
+
+type Protocol @entity {
+	id: ID!
+	contract: Bytes!
+	usersCount: Int!
+	protocolFeeDestination: Bytes!
+	protocolFeePercent: BigInt!
+	subjectFeePercent: BigInt!
+	balance: BigInt! 
+}
+
+type Subject @entity {
+	id: ID!
+	holdersCount: Int!
+	keySupply: BigInt!
+	holders: [Holder!]! @derivedFrom(field: "subject")
+}
+
+type Holder @entity {
+	id: ID!
+	subject: Subject!
+	holdingsTotal: BigInt!
 }
 
 type Trade @entity(immutable: true) {
-  id: Bytes!
-  trader: Bytes! # address
-  subject: Bytes! # address
-  isBuy: Boolean! # bool
-  shareAmount: BigInt! # uint256
-  ethAmount: BigInt! # uint256
-  protocolEthAmount: BigInt! # uint256
-  subjectEthAmount: BigInt! # uint256
-  supply: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+	id: ID!
+  	trader: Bytes! # address
+  	subject: Bytes! # address
+  	isBuy: Boolean! # bool
+  	shareAmount: BigInt! # uint256
+  	ethAmount: BigInt! # uint256
+  	protocolEthAmount: BigInt! # uint256
+  	subjectEthAmount: BigInt! # uint256
+  	supply: BigInt! # uint256
+  	blockNumber: BigInt!
+  	blockTimestamp: BigInt!
+  	transactionHash: Bytes!
 }
