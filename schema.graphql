@@ -8,26 +8,32 @@ type OwnershipTransferred @entity(immutable: true) {
 }
 
 type Protocol @entity {
-	id: ID!
-	contract: Bytes!
-	usersCount: Int!
-	protocolFeeDestination: Bytes!
-	protocolFeePercent: BigInt!
-	subjectFeePercent: BigInt!
-	balance: BigInt! 
+  id: ID!
+  userCount: Int!
+  protocolRevenue: BigDecimal!
+  accountRevenue: BigDecimal!
+  tradeVolume: BigDecimal!
+  totalTrades: Int!
 }
 
 type Subject @entity {
 	id: ID!
-	holdersCount: Int!
+	holdersCount: BigInt!
 	keySupply: BigInt!
-	holders: [Holder!]! @derivedFrom(field: "subject")
+	holders: [SubjectHolder!]! @derivedFrom(field: "subject")
 }
 
 type Holder @entity {
 	id: ID!
-	subject: Subject!
+	subjects: [SubjectHolder!]! @derivedFrom(field: "holder")
 	holdingsTotal: BigInt!
+}
+
+type SubjectHolder @entity {
+	id: ID!
+	subject: Subject!
+	holder: Holder!
+	count: BigInt! # 持有者持有的数量
 }
 
 type Trade @entity(immutable: true) {
@@ -44,3 +50,4 @@ type Trade @entity(immutable: true) {
   	blockTimestamp: BigInt!
   	transactionHash: Bytes!
 }
+
